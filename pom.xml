@@ -18,6 +18,7 @@
 
     <modules>
         <module>myshows-common</module>
+        <module>myshows-services</module>
     </modules>
 
     <properties>
@@ -27,23 +28,24 @@
         <java.version>1.8</java.version>
         <kotlin.version>1.2.30</kotlin.version>
 
-        <!-- Dependency versions -->
+        <!-- Dependency Versions -->
         <commons-codec.version>1.10</commons-codec.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang.version>3.7</commons-lang.version>
-        <!--<jackson.version>2.9.4.1</jackson.version>-->
         <jackson.version>2.9.0</jackson.version>
         <modelmapper.version>1.1.2</modelmapper.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Internal Dependencies -->
             <dependency>
                 <groupId>com.rjs</groupId>
                 <artifactId>myshows-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
-            <!-- Util -->
+
+            <!-- Third Party Dependencies -->
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
@@ -76,38 +78,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!--
-        <build>
-            <pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <artifactId>kotlin-maven-plugin</artifactId>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <configuration>
-                            <args>
-                                <arg>-Xjsr305=strict</arg>
-                            </args>
-                            <compilerPlugins>
-                                <plugin>all-open</plugin>
-                                <plugin>spring</plugin>
-                                <plugin>no-arg</plugin>
-                                <plugin>jpa</plugin>
-                            </compilerPlugins>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.jetbrains.kotlin</groupId>
-                                <artifactId>kotlin-maven-allopen</artifactId>
-                                <version>${kotlin.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </pluginManagement>
-        </build>
-    -->
 </project>
