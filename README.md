@@ -1,2 +1,3 @@
 # myshows
-Full up My Shows web application demonstrating gradle project management, Vue.js front end, and Kotlin on the server side.
+Full up My Shows web application in Kotlin demonstrating a multi-module project with a RESTful server and Thymeleaf web 
+application as separate modules.
