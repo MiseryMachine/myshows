@@ -42,7 +42,7 @@ class UserRestController(
         return convertToUserDto(user)
     }
 
-    @PostMapping("/password-change")
+    @PostMapping("/config/password-change")
     fun changePassword(@RequestBody userConfigDto: UserConfigDto): UserDto {
         var user = userService.findByUsername(userConfigDto.username) ?: throw WebApplicationException(HttpStatus.NOT_FOUND, "User not found.")
 
@@ -52,7 +52,7 @@ class UserRestController(
         return convertToUserDto(user)
     }
 
-    @PostMapping("/update")
+    @PostMapping("/config/update")
     fun saveUser(@RequestBody userConfigDto: UserConfigDto): UserDto {
         var user = userService.findByUsername(userConfigDto.username) ?: throw WebApplicationException(HttpStatus.NOT_FOUND, "User not found.")
 

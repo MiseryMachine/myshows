@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class MyshowsServicesApplication
+class MyShowsServicesApplication
 
 fun main(args: Array<String>) {
-    runApplication<MyshowsServicesApplication>(*args)
+    runApplication<MyShowsServicesApplication>(*args)
 }
