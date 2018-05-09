@@ -1,8 +1,8 @@
 package com.rjs.myshows.services.controller.rest
 
-import com.rjs.myshows.common.domain.UserDto
-import com.rjs.myshows.common.domain.security.UserAuthDto
 import com.rjs.myshows.common.domain.security.UserConfigDto
+import com.rjs.myshows.common.domain.security.UserCredsDto
+import com.rjs.myshows.common.domain.security.UserDto
 import com.rjs.myshows.services.controller.UserController
 import com.rjs.myshows.services.service.UserService
 import org.modelmapper.ModelMapper
@@ -19,8 +19,8 @@ class UserRestController(
     modelMapper: ModelMapper
 ): UserController(userService, modelMapper) {
     @PostMapping("/login")
-    fun login(@RequestBody userAuthDto: UserAuthDto): UserDto {
-        val user = userService.findByUsernameAndPassword(userAuthDto.username, userAuthDto.password) ?:
+    fun login(@RequestBody userCredsDto: UserCredsDto): UserDto {
+        val user = userService.findByUsernameAndPassword(userCredsDto.username, userCredsDto.password) ?:
             throw WebApplicationException(HttpStatus.UNAUTHORIZED, "User login failed.")
 
         return convertToUserDto(user)

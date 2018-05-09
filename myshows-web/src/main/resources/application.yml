@@ -1,0 +1,9 @@
+my-shows:
+  web-service-url: http://localhost:8080/my-shows-ws/ws
+server:
+  servlet:
+    context-path: /my-shows
+spring:
+  mvc:
+    favicon:
+      enabled: false

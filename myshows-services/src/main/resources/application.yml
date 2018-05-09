@@ -1,8 +1,8 @@
-my-movies:
+my-shows:
   local-file-path: C:/projects/myshows-server/app-files
 server:
   servlet:
-    context-path: /mymovies
+    context-path: /my-shows-ws
 spring:
   mvc:
     favicon:

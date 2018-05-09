@@ -1,11 +1,11 @@
-package com.rjs.myshows.common.domain
+package com.rjs.myshows.common.domain.security
 
-import com.rjs.myshows.common.domain.security.Role
-import com.rjs.myshows.common.domain.security.UserBase
+import com.rjs.myshows.common.domain.BaseDto
 import java.time.LocalDate
 
-open class UserDto: BaseDto(), UserBase, User {
+open class UserDto: BaseDto(), User {
     override var username: String = ""
+    override var password: String = ""
     override var email: String = ""
     override var firstName: String? = null
     override var lastName: String? = null

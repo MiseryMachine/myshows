@@ -13,14 +13,14 @@ import java.util.logging.Logger
 class RestClient {
     val logger = Logger.getLogger(RestClient::class.java.name)
 
-    fun <T> exchange(
+    fun <REQ, RES> exchange(
         httpMethod: HttpMethod,
         url: String,
         username: String = "",
         password: String = "",
-        requestObject: String = "",
-        typeReference: ParameterizedTypeReference<T>,
-        uriParameters: Map<String, String> = mapOf()): ResponseEntity<T> {
+        requestObject: REQ? = null,
+        typeReference: ParameterizedTypeReference<RES>,
+        uriParameters: Map<String, String> = mapOf()): ResponseEntity<RES> {
         logger.info("Performing ${httpMethod.name.toLowerCase()} method to: $url")
         val httpUtil = HttpUtil()
         val httpEntity = httpUtil.createHttpEntity(requestObject, username, password, MediaType.APPLICATION_JSON)

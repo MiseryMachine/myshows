@@ -19,6 +19,7 @@
     <modules>
         <module>myshows-common</module>
         <module>myshows-services</module>
+        <module>myshows-web</module>
     </modules>
 
     <properties>

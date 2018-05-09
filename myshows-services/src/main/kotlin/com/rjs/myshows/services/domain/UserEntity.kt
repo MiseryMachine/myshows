@@ -1,18 +1,17 @@
 package com.rjs.myshows.services.domain
 
-import com.rjs.myshows.common.domain.User
 import com.rjs.myshows.common.domain.security.Role
-import com.rjs.myshows.common.domain.security.UserBase
+import com.rjs.myshows.common.domain.security.User
 import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
-class UserEntity: BaseEntity(), UserBase, User {
+class UserEntity: BaseEntity(), User {
     @Column(length = 40, nullable = false, unique = true)
     override var username: String = ""
 
     @Column(nullable = false)
-    var password: String = ""
+    override var password: String = ""
 
     @Column(nullable = false, unique = true)
     override var email: String = ""

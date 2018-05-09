@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layouts/default"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Search Shows</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rating.css}"/>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        function updateGenres() {
+            var showTypes = /*[[${showTypes}]]*/ null;
+            var filterShowType = /*[[${showSearchFilter.showTypeName}]]*/ null;
+            var filterGenres = /*[[${showSearchFilter.genres}]]*/ [];
+            var showTypeIdx = $("#show-type-select").prop('selectedIndex');
+
+            if (showTypeIdx === null || showTypeIdx === undefined) {
+                showTypeIdx = 0;
+            }
+
+            var showType = showTypes[showTypeIdx];
+            var genreSelect = $("#genre-select");
+            var options = [];
+
+            if (genreSelect.prop) {
+                options = genreSelect.prop("options");
+            }
+            else {
+                options = genreSelect.attr("options");
+            }
+
+            $("option", genreSelect).remove();
+
+            if (showType !== null && showType !== undefined) {
+                var genres = showType.genres;
+                // var genres = showType.genresOrdered;
+
+                $.each(genres, function (genreIdx, genreVal) {
+                    var selected = showType.name === filterShowType && filterGenres.indexOf(genreVal) >= 0;
+                    options[options.length] = new Option(genreVal, genreVal, false, selected);
+                });
+            }
+        }
+
+        function filterSelected() {
+            var userFilters = /*[[${userFilters}]]*/ null;
+            console.log("userFilters = " + userFilters);
+
+            if (userFilters !== null) {
+                var filterIdx = $("#filter-select").prop("selectedIndex");
+                console.log("filterIdx = " + filterIdx);
+
+                if (filterIdx === null || filterIdx === undefined || filterIdx < 0) {
+                    return;
+                }
+
+                var showTypeSelect = $("#show-type-select");
+                var formatSelect = $("#format-select");
+                var ratingSelect = $("#rating-select");
+                var titleText = $("#title-text");
+                var genreSelect = $("#genre-select");
+
+                showTypeSelect.prop("selectedIndex", 0);
+                formatSelect.prop("selectedIndex", 0);
+                ratingSelect.prop("selectedIndex", ratingSelect.length - 1);
+                titleText.val("");
+
+                if (filterIdx > 0 && filterIdx <= userFilters.length) {
+                    var userFilter = userFilters[--filterIdx];
+
+                    if (userFilter.showTypeName !== null && userFilter.showTypeName !== "") {
+                        console.log("userFilter.showTypeName = " + userFilter.showTypeName);
+                        showTypeSelect.val(userFilter.showTypeName);
+                        updateGenres();
+                        genreSelect.prop("selectedIndex", -1);
+                    }
+
+                    if (userFilter.format !== null && userFilter.format !== "") {
+                        console.log("userFilter.format = " + userFilter.format);
+                        formatSelect.val(userFilter.format);
+                    }
+
+                    if (userFilter.starRating !== null && userFilter.starRating !== "") {
+                        console.log("userFilter.starRating = " + userFilter.starRating);
+                        ratingSelect.val(userFilter.starRating);
+                    }
+
+                    if (userFilter.title !== null && userFilter.title !== "") {
+                        console.log("userFilter.title = " + userFilter.title);
+                        titleText.val(userFilter.title);
+                    }
+
+                    if (userFilter.genres !== null && userFilter.genres.length > 0) {
+                        console.log("userFilter.genres = " + userFilter.genres);
+                        genreSelect.val(userFilter.genres);
+                    }
+                }
+                else {
+                    updateGenres();
+                    genreSelect.prop("selectedIndex", -1);
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            var isAdmin = /*[[${@adminService.hasRoles(#httpServletRequest, 'ROLE_ADMIN')}]]*/ false;
+
+            // Update the active item in the nav bar
+            if ($("#homePage").length) {
+                $("#navHome").addClass("active");
+            }
+            else if ($("#showsPage").length) {
+                $("#navShows").addClass("active");
+            }
+            else if ($("#adminPage").length) {
+                $("#navAdmin").addClass("active");
+            }
+
+            var colDefs = [
+                {
+                    targets: [0, 2],
+                    orderable: false
+                },
+                {
+                    targets: [5],
+                    type: "natural",
+                    width: "85px"
+                },
+                {
+                    targets: [6],
+                    visible: false
+                }
+            ];
+
+            if (isAdmin) {
+                colDefs = [
+                    {
+                        targets: [0, 2, 6],
+                        orderable: false
+                    },
+                    {
+                        targets: [5],
+                        type: "natural",
+                        width: "85px"
+                    }
+                ]
+            }
+
+            $('#show-table').DataTable({
+                pagingType: 'full_numbers',
+                lengthMenu: [5, 10, 20],
+                dom: "<'row'<'col-sm-3'f><'col-sm-9'p>><'row'<'col-sm-12'tr>><'row'<'col-sm-3'l><'col-sm-9'p>>",
+                columnDefs: colDefs
+            });
+
+            updateGenres();
+        });
+
+        var showDetailsUrl = /*[[@{/shows/details}]]*/ "/shows/blah/details";
+
+        function openShowModal(showId) {
+            $.ajax({
+                url: showDetailsUrl + "/" + showId,
+                success: function (data) {
+                    $("#show-modal-holder").html(data);
+                    $("#show-modal").modal("show");
+                }
+            })
+        }
+
+        function openDeleteFilterConfirmModal() {
+            if ($("#filter-select").prop("selectedIndex") > 0) {
+                var id = $("#filter-select").val();
+                $("#delete-filter-id").val(id);
+                $("#delete-filter-modal").modal("show");
+            }
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div id="showsPage" layout:fragment="content">
+    <div class="row">
+        <h1 class="col-sm-6">Search Shows</h1>
+        <div class="col-sm-5 text-right">
+            <!--<select id="filter-select" class="form-control" th:field="${selUserFilter}" onchange="filterSelected();">-->
+            <select id="filter-select" class="form-control" th:field="${selUserFilter}" onchange="filterSelected();">
+                <!--<select id="filter-select" class="form-control">-->
+                <option value="-1">None</option>
+                <option th:each="uf : ${userFilters}"
+                        th:value="${uf.id}"
+                        th:text="${uf.name}"></option>
+            </select>
+        </div>
+        <div class="col-sm-1 text-left">
+            <!--<a href="#" class="text-danger" title="Delete Filter" onclick="openDeleteFilterConfirmModal(); return false;"><i class="fa fa-trash-o"></i></a>-->
+            <button type="button" class="btn btn btn-danger" title="Delete Filter" onclick="openDeleteFilterConfirmModal(); return false;"><i class="fa fa-trash-o"></i></button>
+        </div>
+    </div>
+
+    <form action="#" th:action="@{/shows/search}" th:object="${showSearchFilter}" method="post">
+        <div class="form-row">
+            <div class="col-sm-9">
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label for="show-type-select">Type:</label>
+                        <select id="show-type-select" class="form-control" th:field="*{showTypeName}"
+                                onchange="updateGenres();">
+                            <option th:each="st : ${showTypes}"
+                                    th:value="${st.name}"
+                                    th:text="${st.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="format-select">Format:</label>
+                        <select id="format-select" class="form-control" th:field="*{format}">
+                            <option th:each="mFormat : ${mediaFormats}"
+                                    th:value="${mFormat}"
+                                    th:text="${mFormat}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="rating-select">Rating:</label>
+                        <select id="rating-select" class="form-control" th:field="*{starRating}">
+                            <option th:each="r : ${starRatings}"
+                                    th:value="${r}"
+                                    th:text="${r} + ' star'"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-12">
+                        <label for="title-text">Title:</label>
+                        <input id="title-text" type="text" name="title" class="form-control" th:field="*{title}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="title-text">Genres:</label>
+                    <select id="genre-select" class="form-control" multiple="multiple" size="5" th:field="*{genres}">
+                        <!--
+                                                <option th:each="g : *{showType.genres}"
+                                                        th:value="${g}"
+                                                        th:text="${g}"></option>
+                        -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 text-center">
+            <button id="search-button" type="submit" class="btn btn-primary">Search</button>
+            <!--<button id="save-current-filter-button" type="button" class="btn btn-success" onclick="openSaveFilterModal(); return false;">Save</button>-->
+            <button id="save-current-filter-button" type="button" class="btn btn-success" data-toggle="modal" data-target="#new-filter-modal">Save</button>
+            <button id="reset-button" type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+    <p></p>
+    <div id="results-area" class="row" th:if="${numResults > 0}">
+        <h4 class="row" th:text="${'Shows Found: ' + numResults}"></h4>
+        <table id="show-table" class="table table-striped">
+            <!--<thead class="thead-dark">-->
+            <thead>
+            <tr class="bg-info text-white">
+                <th scope="col"></th>
+                <th scope="col">Title</th>
+                <th scope="col">Tag Line</th>
+                <th scope="col">Genres</th>
+                <th scope="col">Format</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="show : ${shows}">
+                <td>
+                    <a href="#" th:onclick="'openShowModal(' + ${show.id} + '); return false;'">
+                        <img th:src="@{${'/shows/poster-thumb/' + show.id}}" width="92"/>
+                    </a>
+                </td>
+                <td><a href="#" th:onclick="'openShowModal(' + ${show.id} + '); return false;'"><span
+                        th:text="${show.title}"/></a></td>
+                <td th:text="${show.tagLine}"></td>
+                <td th:text="${show.genreText}"></td>
+                <td th:text="${show.mediaFormat}"></td>
+                <td class="text-center">
+                    <span class="fa fa-star" th:classappend="(${show.starRating} > 0) ? 'starred' : ''"></span>
+                    <span class="fa fa-star" th:classappend="(${show.starRating} > 1) ? 'starred' : ''"></span>
+                    <span class="fa fa-star" th:classappend="(${show.starRating} > 2) ? 'starred' : ''"></span>
+                    <span class="fa fa-star" th:classappend="(${show.starRating} > 3) ? 'starred' : ''"></span>
+                    <span class="fa fa-star" th:classappend="(${show.starRating} > 4) ? 'starred' : ''"></span>
+                </td>
+                <td class="text-center">
+                    <!--<a href="#" th:href="@{/shows/edit-show/${show.id}}">-->
+                    <a href="#" th:href="@{${'/admin/edit-show/' + show.id}}">
+                        <span class="fa fa-pencil-square-o text-success" th:title="'Edit ' + ${show.title}"></span>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="no-results" class="row" th:if="${numResults &lt;= 0}">
+        <h4>No results found.</h4>
+    </div>
+    <div id="show-modal-holder"></div>
+    <div id="new-filter-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <h5>Save Filter</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form th:action="@{/shows/userFilter/save}" method="post">
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="filter-name-text">Filter Name:</label>
+                                    <!--<input id="filter-name-text" type="text" name="title" class="form-control" th:field="${newFilterName}"/>-->
+                                    <input id="filter-name-text" type="text" name="newFilterName" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <button id="save-filter-button" type="submit" class="btn btn-primary">Save</button>
+                                <button id="cancel-save-filter-button" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="delete-filter-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <h5>Delete Filter</h5>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form id="delete-filter-form" th:action="@{/shows/userFilter/delete}" method="post">
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <!--<label th:text="'Delete filter ' + ${selUserFilter} + '. Are you sure?'">Filter Name:</label>-->
+                                    <label>Delete selected filter.<br/>Are you sure?</label>
+                                    <input id="delete-filter-id" name="deleteFilterId" type="hidden"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <button id="delete-filter-confirm-button" type="submit" class="btn btn-primary">Yes</button>
+                                <button id="delete-filter-decline-button" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

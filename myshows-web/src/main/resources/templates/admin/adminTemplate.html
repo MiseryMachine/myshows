@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layouts/default"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>My Movies - Admin</title>
+</head>
+<body>
+<div id="adminPage" layout:fragment="content">
+    <div class="row">
+        <div class="col-sm-2">
+            <nav class="nav flex-column">
+                <a class="btn btn-primary nav-link" role="button" th:href="@{/admin/mdb/search-mdb}">Add Shows</a>
+                <a class="btn btn-primary nav-link" role="button" th:href="@{/admin/adminUsers}">Users</a>
+            </nav>
+            <!--
+                    <ul class="nav nav-pills flex-column">
+                        <li>
+                            <a th:href="@{/admin/adminShows}">Shows</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/mdb/search-mdb}">Add Shows</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/adminUsers}">Users</a>
+                        </li>
+                    </ul>
+            -->
+        </div>
+        <div class="col-sm-10 text-left" layout:fragment="admin-content">
+            <h1>Admin content</h1>
+        </div>
+    </div>
+</div>
+</body>
+</html>

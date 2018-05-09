@@ -1,6 +1,6 @@
 package com.rjs.myshows.services.controller
 
-import com.rjs.myshows.common.domain.UserDto
+import com.rjs.myshows.common.domain.security.UserDto
 import com.rjs.myshows.services.domain.UserEntity
 import com.rjs.myshows.services.service.UserService
 import org.modelmapper.ModelMapper

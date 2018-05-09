@@ -11,7 +11,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 @Configuration
-@ConfigurationProperties("my-movies")
+@ConfigurationProperties("my-shows")
 class AppConfig {
     val logger = Logger.getLogger(AppConfig::class.java.name)!!
     val datePattern = "yyyy-MM-dd"
