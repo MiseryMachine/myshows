@@ -1,5 +1,6 @@
 package com.rjs.myshows.web.config
 
+import nz.net.ultraq.thymeleaf.LayoutDialect
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -18,6 +19,9 @@ class WebConfig: WebMvcConfigurer {
 
         return arrayHttpMessageConverter
     }
+
+    @Bean
+    fun layoutDialect() = LayoutDialect()
 
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController("/home").setViewName("home")

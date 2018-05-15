@@ -1,14 +1,14 @@
 package com.rjs.myshows.common.util.security
 
 import com.rjs.myshows.common.domain.security.UserCredsDto
-import com.rjs.myshows.common.util.security.exchange.LoginExchange
+import com.rjs.myshows.common.util.security.exchange.UserExchange
 import com.rjs.myshows.common.util.web.WebServiceException
 import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider
 import org.springframework.security.core.userdetails.UserDetails
 
-class RestAuthenticationProvider(private var myShowsRestClient: MyShowsRestClient): AbstractUserDetailsAuthenticationProvider() {
+class RestAuthenticationProvider(private var myShowsRestClient: MyShowsRestClient, private val userExchange: UserExchange): AbstractUserDetailsAuthenticationProvider() {
     override fun doAfterPropertiesSet() {
 //        super.doAfterPropertiesSet()
     }
@@ -22,7 +22,7 @@ class RestAuthenticationProvider(private var myShowsRestClient: MyShowsRestClien
 
         try {
             // Authenticate user through web service
-            val userDto = myShowsRestClient.exchange(LoginExchange(userAuth))
+            val userDto = myShowsRestClient.exchange(userExchange.login(userAuth))
             loadedUser = MyShowsUserDetails(userDto)
         }
         catch (e: Exception) {

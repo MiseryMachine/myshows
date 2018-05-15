@@ -5,11 +5,12 @@ import com.rjs.myshows.common.domain.security.UserDto
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpMethod
 
-class LoginExchange(credentials: UserCredsDto):
-    RestExchange<UserCredsDto, UserDto>(
+class UserExchange {
+    fun login(credentials: UserCredsDto) = RestExchange(
         "/users/login",
         object: ParameterizedTypeReference<UserDto>(){},
         HttpMethod.POST,
         null,
         credentials
     )
+}

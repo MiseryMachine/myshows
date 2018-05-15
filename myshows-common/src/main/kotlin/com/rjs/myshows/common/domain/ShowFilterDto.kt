@@ -1,4 +1,4 @@
-package com.rjs.myshows.services.domain.dto
+package com.rjs.myshows.common.domain
 
 data class ShowFilterDto(
     var showTypeName: String = "",

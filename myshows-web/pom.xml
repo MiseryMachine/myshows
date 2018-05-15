@@ -3,6 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--<groupId>com.rjs</groupId>-->
     <artifactId>myshows-web</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -16,7 +17,28 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+<!--
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.1.RELEASE</version>
+        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
+    </parent>
+-->
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <!-- Dependency versions -->
+        <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
+        <thymeleaf-security.version>3.0.2.RELEASE</thymeleaf-security.version>
+
+        <!-- webjars versions -->
+        <bootstrap.version>4.0.0</bootstrap.version>
+        <fontawesome.version>4.7.0</fontawesome.version>
+        <jquery.version>3.3.1</jquery.version>
     </properties>
 
     <dependencies>
@@ -24,6 +46,7 @@
         <dependency>
             <groupId>com.rjs</groupId>
             <artifactId>myshows-common</artifactId>
+            <!--<version>1.0-SNAPSHOT</version>-->
         </dependency>
 
         <!-- Base Dependencies -->
@@ -53,6 +76,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+            <version>${thymeleaf-security.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
         </dependency>
@@ -68,6 +96,34 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
         </dependency>
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>${thymeleaf-layout-dialect.version}</version>
+        </dependency>
+
+        <!-- webjars -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${bootstrap.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>fontawesome</artifactId>
+            <version>${fontawesome.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${jquery.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.33</version>
+        </dependency>
+
 
         <!-- Runtime Dependencies -->
         <dependency>
@@ -98,6 +154,15 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-idea-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
             </plugin>
             <!--Plugin that compiles kotlin code into bytecode that runs on Java Virtual Machine-->
             <plugin>
@@ -153,5 +218,23 @@
                 </dependencies>
             </plugin>
         </plugins>
+<!--
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>static/resources/bootstrap/fonts/**</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>static/resources/bootstrap/fonts/**</include>
+                </includes>
+            </resource>
+        </resources>
+-->
     </build>
 </project>

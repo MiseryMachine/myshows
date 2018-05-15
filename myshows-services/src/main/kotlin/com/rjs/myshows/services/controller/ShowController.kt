@@ -1,12 +1,8 @@
 package com.rjs.myshows.services.controller
 
-import com.rjs.myshows.common.domain.ShowDto
-import com.rjs.myshows.common.domain.UserShowFilterDto
-import com.rjs.myshows.common.domain.mediaFormats
-import com.rjs.myshows.common.domain.starRatings
+import com.rjs.myshows.common.domain.*
 import com.rjs.myshows.services.config.AppConfig
 import com.rjs.myshows.services.domain.ShowEntity
-import com.rjs.myshows.services.domain.dto.ShowFilterDto
 import com.rjs.myshows.services.service.ShowService
 import com.rjs.myshows.services.service.ShowTypeService
 import org.modelmapper.ModelMapper

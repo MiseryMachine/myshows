@@ -3,6 +3,7 @@ my-shows:
 server:
   servlet:
     context-path: /my-shows-ws
+  port: 8090
 spring:
   mvc:
     favicon:

@@ -1,10 +1,10 @@
 package com.rjs.myshows.services.controller.rest
 
 import com.rjs.myshows.common.domain.ShowDto
+import com.rjs.myshows.common.domain.ShowFilterDto
 import com.rjs.myshows.services.config.AppConfig
 import com.rjs.myshows.services.controller.ShowController
 import com.rjs.myshows.services.domain.ShowEntity
-import com.rjs.myshows.services.domain.dto.ShowFilterDto
 import com.rjs.myshows.services.service.ShowService
 import com.rjs.myshows.services.service.ShowTypeService
 import org.modelmapper.ModelMapper

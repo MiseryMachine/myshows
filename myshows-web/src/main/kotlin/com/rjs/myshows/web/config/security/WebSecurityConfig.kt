@@ -2,6 +2,7 @@ package com.rjs.myshows.web.config.security
 
 import com.rjs.myshows.common.util.security.MyShowsRestClient
 import com.rjs.myshows.common.util.security.RestAuthenticationProvider
+import com.rjs.myshows.common.util.security.exchange.UserExchange
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -20,10 +21,13 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     private var webServiceUrl = ""
 
     @Bean
-    fun myshowsRestClient() = MyShowsRestClient(webServiceUrl)
+    fun myShowsRestClient() = MyShowsRestClient(webServiceUrl)
 
     @Bean
-    fun authenticationProvider() = RestAuthenticationProvider(myshowsRestClient())
+    fun userExchange() = UserExchange()
+
+    @Bean
+    fun authenticationProvider() = RestAuthenticationProvider(myShowsRestClient(), userExchange())
 
     @Bean
     fun encoder() = BCryptPasswordEncoder(11)

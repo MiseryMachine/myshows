@@ -1,5 +1,5 @@
 my-shows:
-  web-service-url: http://localhost:8080/my-shows-ws/ws
+  web-service-url: http://localhost:8090/my-shows-ws/ws
 server:
   servlet:
     context-path: /my-shows

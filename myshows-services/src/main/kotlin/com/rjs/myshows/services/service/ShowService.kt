@@ -1,12 +1,12 @@
 package com.rjs.myshows.services.service
 
+import com.rjs.myshows.common.domain.ShowFilterDto
 import com.rjs.myshows.common.util.createThumbImage
 import com.rjs.myshows.common.util.jpegImage
 import com.rjs.myshows.common.util.pngImage
 import com.rjs.myshows.services.config.AppConfig
 import com.rjs.myshows.services.domain.ShowEntity
 import com.rjs.myshows.services.domain.UserShowFilterEntity
-import com.rjs.myshows.services.domain.dto.ShowFilterDto
 import com.rjs.myshows.services.repository.ShowRepository
 import com.rjs.myshows.services.repository.filter.*
 import com.rjs.myshows.services.repository.specification.DataSpecification
